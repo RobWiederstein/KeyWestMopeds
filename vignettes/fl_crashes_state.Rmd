@@ -1,0 +1,284 @@
+---
+title: "Florida Statewide Crashes 2012 - 2021"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Florida Statewide Crashes 2012 - 2021}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = F,
+  warning = F,
+  comment = "#>",
+  fig.height=4,
+  fig.width = 6,
+  fig.align = "center"
+)
+```
+
+```{r setup, include = F}
+library(KeyWestMopeds)
+library(kableExtra)
+library(ggplot2)
+library(dplyr, warn.conflicts = FALSE)
+# Suppress summarise info
+options(dplyr.summarise.inform = FALSE)
+library(magrittr)
+library(scales)
+```
+
+```{r load-data, echo = T}
+# load all crashes and state-wide population data
+data(mv_crashes_all)
+data(fl_state_pop)
+```
+
+## Total Crashes
+
+```{r total-crashes}
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, motorcycle_involved) %>%
+        summarize(total_crashes = n()) %>%
+        ggplot() +
+        aes(calendar_year, total_crashes, group = motorcycle_involved, color = motorcycle_involved) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Motorcycle") +
+        labs(title = ("Total Number of Crashes")) +
+        theme_minimal()
+
+```
+
+## Total Crashes Per Capita
+
+```{r total-crashes-per-capita}
+
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, motorcycle_involved) %>%
+        summarize(total_crashes = n()) %>%
+        dplyr::left_join(., fl_state_pop, by = 'calendar_year') %>%
+        dplyr::filter(calendar_year %in% c(2012:2019)) %>%
+        mutate(per_100k = divide_by(total_crashes, pop) * 1e5) %>%
+        mutate(per_100k = per_100k %>% round(1)) %>%
+        ggplot() +
+        aes(calendar_year, per_100k, group = motorcycle_involved, color = motorcycle_involved) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Motorcycle") +
+        labs(title = ("Total Number of Crashes Per 100,000 Residents")) +
+        theme_minimal()
+
+```
+
+## Total Persons Killed
+
+```{r total-killed}
+
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, motorcycle_involved) %>%
+        summarize(total_killed = sum(number_of_killed)) %>%
+        ggplot() +
+        aes(calendar_year, total_killed, group = motorcycle_involved, color = motorcycle_involved) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Motorcycle") +
+        labs(title = "Total Persons Killed") +
+        theme_minimal()
+```
+
+## Total Persons Killed Per Capita
+
+```{r total-killed-per-capita}
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, motorcycle_involved) %>%
+        summarize(total_killed = sum(number_of_killed)) %>%
+        dplyr::left_join(. , fl_state_pop, by = "calendar_year") %>%
+        dplyr::filter(calendar_year %in% c(2012:2019)) %>%
+        mutate(per_100k = divide_by(total_killed, pop) * 1e5) %>%
+        mutate(per_100k = per_100k %>% round(1)) %>%
+        ggplot() +
+        aes(calendar_year, per_100k, group = motorcycle_involved, color = motorcycle_involved) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Motorcycle") +
+        labs(title = "Total Persons Killed Per 100,000 Residents") +
+        theme_minimal()
+```
+
+## Total Crashes Disaggregated by Impaired Driver
+
+```{r impaired-driver}
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, impaired_driver) %>%
+        summarize(total_crashes = n()) %>%
+        ggplot() +
+        aes(calendar_year, total_crashes, group = impaired_driver, color = impaired_driver) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Impaired Driver") +
+        labs(title = "Total Crashes") +
+        theme_minimal()
+```
+
+## Total Crashes Disaggregated by Injury Severity
+
+```{r total-crashes-injury-severity}
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, injsever) %>%
+        summarize(total_crashes = n()) %>%
+        tidyr::drop_na() %>% 
+        ggplot() +
+        aes(calendar_year, total_crashes, group = injsever, color = injsever) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "Injury Severity") +
+        labs(title = "Total Crashes by Injury Severity") +
+        theme_minimal()
+```
+
+## Total Crashes Disaggregated by Location
+
+```{r total-crashes-in-town}
+mv_crashes_all %>%
+        mutate(calendar_year = calendar_year %>% as.integer) %>% 
+        group_by(calendar_year, in_town_flag) %>%
+        summarize(total_crashes = n()) %>%
+        tidyr::drop_na() %>% 
+        ggplot() +
+        aes(calendar_year, total_crashes, group = in_town_flag, color = in_town_flag) +
+        geom_line() +
+        geom_point() +
+        scale_y_continuous(label = comma, name = "") +
+        scale_x_continuous(name = "") +
+        scale_color_discrete(name = "In Town") +
+        labs(title = "Total Crashes by Location") +
+        theme_minimal()
+```
+
+## Total Crashes Per Day 2015 - 2019
+
+```{r total-crashes-by-day, fig.height = 6}
+mv_crashes_all %>% 
+  mutate(calendar_year = calendar_year %>% as.integer) %>% 
+  dplyr::filter(calendar_year %in% c(2015:2019)) %>% 
+  group_by(date, calendar_year) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(date, total_crashes) + 
+  geom_line(alpha = .5) + 
+  facet_wrap(.~calendar_year, scales = "free_x", ncol = 1, strip.position = "right") +
+  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+  labs(title = "Total Crashes by Day") +
+  theme_bw()
+```
+
+## Total Crashes by Day of Week
+
+```{r total-crashes-by-day-of-week}
+mv_crashes_all %>% 
+  group_by(dayoweek) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(dayoweek, total_crashes) + 
+  geom_point(size = 3, color = "blue") +
+  scale_y_continuous(name = "", labels = comma, limits=c(0, 500000)) +
+  scale_x_discrete(name = "") +
+  labs(title = "Total Crashes by Day of Week") +
+  theme_minimal()
+```
+
+## Total Motorcycle Crashes Per Day 2015 - 2019
+
+```{r motorcycle-crashes-by-day, fig.height=6}
+mv_crashes_all %>% 
+  mutate(calendar_year = calendar_year %>% as.integer) %>% 
+  dplyr::filter(calendar_year %in% c(2015:2019)) %>% 
+  dplyr::filter(motorcycle_involved == "Yes") %>% 
+  group_by(date, calendar_year) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(date, total_crashes) + 
+  geom_line(alpha = .5) + 
+  facet_wrap(.~calendar_year, scales = "free_x", ncol = 1, strip.position = "right") +
+  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+  labs(title = "Total Motorcycle Crashes by Day") +
+  theme_bw()
+```
+
+## Total Impaired Driver Crashes Per Day 2015 - 2019
+
+```{r impaired-driver-crashes-by-day, fig.height=6}
+mv_crashes_all %>% 
+  mutate(calendar_year = calendar_year %>% as.integer) %>% 
+  dplyr::filter(calendar_year %in% c(2015:2019)) %>% 
+  dplyr::filter(impaired_driver == "Yes") %>% 
+  group_by(date, calendar_year) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(date, total_crashes) + 
+  geom_line(alpha = .5) + 
+  facet_wrap(.~calendar_year, scales = "free_x", ncol = 1, strip.position = "right") +
+  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+  labs(title = "Total Impaired Driver Crashes by Day") +
+  theme_bw()
+```
+
+## Total Crashes by Impairment and Day of Week
+
+```{r impaired-driver-by-weekday}
+mv_crashes_all %>% 
+  #dplyr::filter(impaired_driver == "Yes") %>% 
+  group_by(dayoweek, impaired_driver) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(dayoweek, total_crashes, color = impaired_driver, group = impaired_driver) + 
+  geom_point(size = 3) +
+  facet_grid(impaired_driver ~ ., scales = "free")+
+  scale_y_continuous(name = "", labels = comma) +
+  scale_x_discrete(name = "") +
+  labs(title = "Total by Impairment and Day of Week") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## Total Impaired Driver/Motorcycle Crashes Per Day 2015 - 2019
+
+```{r impaired-motorcycle-crashes-by-day, fig.height=6}
+mv_crashes_all %>% 
+  mutate(calendar_year = calendar_year %>% as.integer) %>% 
+  dplyr::filter(calendar_year %in% c(2015:2019)) %>% 
+  dplyr::filter(impaired_driver == "Yes") %>% 
+  dplyr::filter(motorcycle_involved == "Yes") %>% 
+  group_by(date, calendar_year) %>% 
+  summarize(total_crashes = n()) %>% 
+  ggplot() +
+  aes(date, total_crashes) + 
+  geom_line(alpha = .5) + 
+  facet_wrap(.~calendar_year, scales = "free_x", ncol = 1, strip.position = "right") +
+  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+  labs(title = "Total Impaired Driver Motorcycle Crashes by Day") +
+  theme_bw()
+```
+

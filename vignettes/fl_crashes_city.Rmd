@@ -1,0 +1,153 @@
+---
+title: "Florida Crashes by City 2012 - 2021"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Florida Crashes by City 2012 - 2021}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = F,
+  warning = F,
+  comment = "#>",
+  fig.height=4,
+  fig.width = 6,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, include=F}
+library(KeyWestMopeds)
+library(kableExtra)
+library(dplyr)
+library(magrittr)
+library(DT)
+```
+
+```{r load-data, include=F}
+data("mv_crashes_all")
+data("fl_city_codes")
+data("fl_city_pop")
+```
+
+```{r city-crashes-all, include = F}
+mv_crashes_city <-
+  mv_crashes_all %>% 
+  mutate(city_code = stringr::str_sub(dhscntycty, start = -2)) %>%
+        dplyr::filter(!grepl("00", city_code)) %>%
+        dplyr::filter(in_town_flag == "Yes") %>%
+        select(-city_code) %>%
+        rename(year = calendar_year, city_code = dhscntycty) %>%
+        mutate(year = year %>% as.character) %>% 
+        mutate(year = year %>% as.integer)
+```
+
+
+## Top 100 Florida Cities for Total Crashes in 2019
+
+```{r total-crashes-city}
+
+df.2 <-
+  mv_crashes_city %>% 
+  dplyr::filter(year == 2019) %>% 
+  group_by(city_code) %>% 
+  summarize(tot_crashes = n()) %>% 
+  arrange(desc(tot_crashes)) %>% 
+  mutate(year = 2019) %>% 
+  dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
+  dplyr::select(year, city_code, city, tot_crashes) %>% 
+  slice_head(n = 100) 
+datatable((df.2))
+
+```
+
+## Top 100 Florida Cities for Crashes Per 100,000 Residents
+
+```{r total-crashes-per-capita-city}
+fl_city_pop <- fl_city_pop %>% mutate(year = year %>% as.integer)
+
+df.1 <-
+  mv_crashes_city %>% 
+  dplyr::filter(year == 2019) %>% 
+  group_by(city_code) %>% 
+  summarize(tot_crashes = n()) %>% 
+  arrange(desc(tot_crashes)) %>% 
+  mutate(year = 2019) %>% 
+  dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
+  dplyr::left_join(., fl_city_pop, by = c("city", "year")) %>% 
+  dplyr::select(year, city_code, city, tot_crashes, pop) %>% 
+    mutate(crashes_per_capita = `/`(tot_crashes, pop) * 1e5,
+           crashes_per_capita = crashes_per_capita %>% round(1)) %>% 
+  dplyr::select(year, city_code, city, tot_crashes, pop, crashes_per_capita) %>% 
+  arrange(desc(crashes_per_capita)) %>% 
+  dplyr::filter(pop > 10000) %>% 
+  slice_head(n = 100) 
+datatable(df.1)
+```
+
+
+## Crashes by Year in Cities
+
+```{r crashes-by-year, eval=F}
+df.2 <-
+  crash_data %>% 
+  group_by(year) %>% 
+  summarise(total_crashes  = n(),
+            total_persons = sum(total_persons),
+            total_injured = sum(number_of_injured),
+            total_killed = sum(number_of_killed)
+            )
+df.2 %>% 
+  kbl() %>%
+  kable_material(c("striped", "hover", "condensed"))
+```
+
+
+
+
+## Top 10 Cities by Crash Rate in 2018
+
+```{r top-10-cities-by-incident-rate, eval=F}
+df.2 <-
+  crash_data %>% 
+  dplyr::filter(year == "2018") %>% 
+  group_by(city_code, city, pop) %>% 
+  tally() %>% 
+  dplyr::filter(n > 20) %>% 
+  mutate(rate_per_100k = divide_by(n, pop) * 1e5) %>% 
+  mutate(rate_per_100k = rate_per_100k %>% round(1)) %>% 
+  arrange(desc(rate_per_100k))
+
+df.2[1:10, ]  %>% 
+  kbl() %>% 
+  kable_material(c("striped", "hover", "condensed"))
+```
+
+## Crashes within Cities by Day
+
+Data was available for the calendar years 2012 through 2019.  The crashes were summed by date and faceted by year.  Years 2012 through 2014 were omitted to expand the vertical plotting area and make the variation more prevalent. The number of crashes decreased beginning in 2019. 
+
+```{r plot-crash-by-day, eval=F, fig.height=8, fig.width=6, dpi=300, out.width="100%"}
+df.4 <- 
+  crash_data %>% 
+  mutate(date = stringr::str_sub(crash_date, start = 1, end = 10),
+         date = as.Date(date, format = "%Y/%m/%d"),
+         year = stringr::str_sub(crash_date, start = 1, end = 4),
+         year = as.integer(year)) %>% 
+  dplyr::filter(year %in% c(2015:2019)) %>% 
+  group_by(date, year) %>% 
+ count()
+
+ggplot(df.4, aes(date, n)) + 
+  geom_line(alpha = .5) + 
+  facet_wrap(.~year, scales = "free_x", ncol = 1, strip.position = "right") +
+  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+  #scale_x_datetime(date_labels = "%d-%m")
+  theme_bw()
+
+```
+
+

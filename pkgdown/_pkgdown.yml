@@ -1,0 +1,63 @@
+template:
+  params:
+    bootswatch: cerulean
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - hello
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    hello:
+      text: hello
+      href: hello.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/r-lib/pkgdown/
+    articles:
+      text: Articles
+      menu:
+      - text: Florida Statewide Crashes 2012 - 2021
+        href: articles/fl_crashes_state.html
+      - text: Florida Crashes by County 2012 - 2021
+        href: articles/fl_crashes_county.html
+      - text: Florida Crashes by City 2012 - 2021
+        href: articles/fl_crashes_city.html
+reference:
+- title: Datasets
+- subtitle: Population
+  desc:  State, county and city populations
+- contents:
+  - fl_state_pop
+  - fl_county_pop
+  - fl_city_pop
+- subtitle: Codes
+  desc: Unique city and county identifiers
+- contents:
+  - fl_county_codes
+  - fl_city_codes
+- subtitle: Crashes
+  desc: Data from Florida's long-form reported crashes
+- contents:
+  - mv_crashes_all
+articles:
+- title: Motor Vehicle Crash Data
+  navbar: ~
+  contents:
+  - fl_crashes_state
+  - fl_crashes_county
+  - fl_crashes_city
+repo:
+  url:
+    home: https://github.com/r-lib/pkgdown/

@@ -1,0 +1,32 @@
+Package: KeyWestMopeds
+Title: Explore Motorcyle and Moped Crashes in Florida
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Rob",
+           family = "Wiederstein",
+           role = c("aut", "cre"),
+           email = "rob@robwiederstein.org",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package explores motorcycle and moped crashes in Florida with particular focus on tourist destinations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)
+Imports: 
+    readr,
+    dplyr,
+    magrittr,
+    readxl,
+    stringr,
+    lifecycle
+Suggests: 
+    rmarkdown,
+    knitr,
+    spelling
+VignetteBuilder: knitr
+Language: en-US
+URL: https://github.com/RobWiederstein/KeyWestMopeds
+BugReports: https://github.com/RobWiederstein/KeyWestMopeds/issues
