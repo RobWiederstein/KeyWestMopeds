@@ -50,9 +50,9 @@ devtools::install_github("RobWiederstein/KeyWestMopeds", dependencies = TRUE, bu
 <!-- CONTACT -->
 ### Contact
 
-Rob Wiederstein - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Rob Wiederstein - [@RobWiederstein](https://twitter.com/RobWiederstein) - rob@robwiederstein.org
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/RobWiederstein/KeyWestMopeds](https://github.com/RobWiederstein/KeyWestMopeds)
 
 <!-- ACKNOWLEDGEMENTS -->
 ### Acknowledgements
