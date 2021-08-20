@@ -6,7 +6,8 @@ articles:
   fl_crashes_city: fl_crashes_city.html
   fl_crashes_county: fl_crashes_county.html
   fl_crashes_state: fl_crashes_state.html
-  output: test/output.html
-  rendering: test/rendering.html
-last_built: 2021-08-20T15:06Z
+last_built: 2021-08-20T21:03Z
+urls:
+  reference: https://robwiederstein.github.io/KeyWestMopeds/index.html/reference
+  article: https://robwiederstein.github.io/KeyWestMopeds/index.html/articles
 
