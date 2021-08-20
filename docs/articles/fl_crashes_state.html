@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,13 +45,8 @@
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
+      <ul class="nav navbar-nav"></ul>
+<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -72,12 +69,10 @@
   </ul>
 </li>
 <li>
-  <a href="../hello.html">hello</a>
+  <a href="../articles/test/output.html">Output</a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/pkgdown/">
+  <a href="https://github.com/RobWiederstein/KeyWestMopeds" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -92,7 +87,7 @@
 
       
 
-      </header><script src="fl_crashes_state_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="fl_crashes_state_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Florida Statewide Crashes 2012 - 2021</h1>
@@ -107,71 +102,71 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load all crashes and state-wide population data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">mv_crashes_all</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">fl_state_pop</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mv_crashes_all</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fl_state_pop</span><span class="op">)</span></code></pre></div>
 <div id="total-crashes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes" class="anchor"></a>Total Crashes</h2>
+<a href="#total-crashes" class="anchor" aria-hidden="true"></a>Total Crashes</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-per-capita" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-per-capita" class="anchor"></a>Total Crashes Per Capita</h2>
+<a href="#total-crashes-per-capita" class="anchor" aria-hidden="true"></a>Total Crashes Per Capita</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-per-capita-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-persons-killed" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-persons-killed" class="anchor"></a>Total Persons Killed</h2>
+<a href="#total-persons-killed" class="anchor" aria-hidden="true"></a>Total Persons Killed</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-killed-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-persons-killed-per-capita" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-persons-killed-per-capita" class="anchor"></a>Total Persons Killed Per Capita</h2>
+<a href="#total-persons-killed-per-capita" class="anchor" aria-hidden="true"></a>Total Persons Killed Per Capita</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-killed-per-capita-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-disaggregated-by-impaired-driver" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-disaggregated-by-impaired-driver" class="anchor"></a>Total Crashes Disaggregated by Impaired Driver</h2>
+<a href="#total-crashes-disaggregated-by-impaired-driver" class="anchor" aria-hidden="true"></a>Total Crashes Disaggregated by Impaired Driver</h2>
 <p><img src="fl_crashes_state_files/figure-html/impaired-driver-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-disaggregated-by-injury-severity" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-disaggregated-by-injury-severity" class="anchor"></a>Total Crashes Disaggregated by Injury Severity</h2>
+<a href="#total-crashes-disaggregated-by-injury-severity" class="anchor" aria-hidden="true"></a>Total Crashes Disaggregated by Injury Severity</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-injury-severity-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-disaggregated-by-location" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-disaggregated-by-location" class="anchor"></a>Total Crashes Disaggregated by Location</h2>
+<a href="#total-crashes-disaggregated-by-location" class="anchor" aria-hidden="true"></a>Total Crashes Disaggregated by Location</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-in-town-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-per-day-2015---2019" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-per-day-2015---2019" class="anchor"></a>Total Crashes Per Day 2015 - 2019</h2>
+<a href="#total-crashes-per-day-2015---2019" class="anchor" aria-hidden="true"></a>Total Crashes Per Day 2015 - 2019</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-by-day-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-by-day-of-week" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-by-day-of-week" class="anchor"></a>Total Crashes by Day of Week</h2>
+<a href="#total-crashes-by-day-of-week" class="anchor" aria-hidden="true"></a>Total Crashes by Day of Week</h2>
 <p><img src="fl_crashes_state_files/figure-html/total-crashes-by-day-of-week-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-motorcycle-crashes-per-day-2015---2019" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-motorcycle-crashes-per-day-2015---2019" class="anchor"></a>Total Motorcycle Crashes Per Day 2015 - 2019</h2>
+<a href="#total-motorcycle-crashes-per-day-2015---2019" class="anchor" aria-hidden="true"></a>Total Motorcycle Crashes Per Day 2015 - 2019</h2>
 <p><img src="fl_crashes_state_files/figure-html/motorcycle-crashes-by-day-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-impaired-driver-crashes-per-day-2015---2019" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-impaired-driver-crashes-per-day-2015---2019" class="anchor"></a>Total Impaired Driver Crashes Per Day 2015 - 2019</h2>
+<a href="#total-impaired-driver-crashes-per-day-2015---2019" class="anchor" aria-hidden="true"></a>Total Impaired Driver Crashes Per Day 2015 - 2019</h2>
 <p><img src="fl_crashes_state_files/figure-html/impaired-driver-crashes-by-day-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-crashes-by-impairment-and-day-of-week" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-crashes-by-impairment-and-day-of-week" class="anchor"></a>Total Crashes by Impairment and Day of Week</h2>
+<a href="#total-crashes-by-impairment-and-day-of-week" class="anchor" aria-hidden="true"></a>Total Crashes by Impairment and Day of Week</h2>
 <p><img src="fl_crashes_state_files/figure-html/impaired-driver-by-weekday-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="total-impaired-drivermotorcycle-crashes-per-day-2015---2019" class="section level2">
 <h2 class="hasAnchor">
-<a href="#total-impaired-drivermotorcycle-crashes-per-day-2015---2019" class="anchor"></a>Total Impaired Driver/Motorcycle Crashes Per Day 2015 - 2019</h2>
+<a href="#total-impaired-drivermotorcycle-crashes-per-day-2015---2019" class="anchor" aria-hidden="true"></a>Total Impaired Driver/Motorcycle Crashes Per Day 2015 - 2019</h2>
 <p><img src="fl_crashes_state_files/figure-html/impaired-motorcycle-crashes-by-day-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
   </div>
@@ -187,11 +182,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Rob Wiederstein.</p>
+  <p></p>
+<p>Developed by Rob Wiederstein.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -199,6 +196,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -19,7 +19,6 @@ parties or passengers involved in the crash;
 - Involved a commercial motor vehicle.
 
 
-
 ### Getting started 
 
 The package consists of the dataset `crash_data`.  Assistance may be requested via the command `?crash_data`.
@@ -38,14 +37,6 @@ if (!require("devtools")) {
 }
 devtools::install_github("RobWiederstein/KeyWestMopeds", dependencies = TRUE, build_vignettes = TRUE)
 ```
-
-### Built With
-
-- [Rstudio]()
-- [R]()
-- [usethis]()
-- [pkgdown]()
-
 
 <!-- CONTACT -->
 ### Contact

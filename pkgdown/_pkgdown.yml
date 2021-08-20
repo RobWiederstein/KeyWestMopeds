@@ -5,26 +5,17 @@ navbar:
   structure:
     left:
     - home
-    - intro
+    right:
     - reference
     - articles
-    - hello
-    - tutorials
-    - news
-    right: github
+    - bibliography
+    - output
+    - github
   components:
-    home:
-      icon: fas fa-home fa-lg
-      href: index.html
-    hello:
-      text: hello
-      href: hello.html
+    home: ~
     reference:
       text: Reference
       href: reference/index.html
-    github:
-      icon: fab fa-github fa-lg
-      href: https://github.com/r-lib/pkgdown/
     articles:
       text: Articles
       menu:
@@ -34,6 +25,18 @@ navbar:
         href: articles/fl_crashes_county.html
       - text: Florida Crashes by City 2012 - 2021
         href: articles/fl_crashes_city.html
+    bibliogrpahy:
+      text: Bibliography
+      href: articles/bibliography.html
+    output:
+      text: Output
+      href: articles/test/output.html
+    rendering:
+      text: Rendering
+      href: articles/test/rendering.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/RobWiederstein/KeyWestMopeds
 reference:
 - title: Datasets
 - subtitle: Population

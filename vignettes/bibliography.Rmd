@@ -1,0 +1,21 @@
+---
+title: "Bibliography"
+output: html_document
+bibliography: references.bib
+nocite: '@*'
+vignette: >
+  %\VignetteIndexEntry{Bibliography}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Resources
+
+[Florida Traffic Crash Dashboard](https://www.flhsmv.gov/traffic-crash-reports/crash-dashboard/)
+
+[Florida Uniform Traffic Report Manual](https://www.flhsmv.gov/pdf/courts/crash/CrashManualComplete.pdf)
+
+
+# References
+
+<div id="refs"></div>

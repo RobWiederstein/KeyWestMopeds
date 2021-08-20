@@ -1,9 +1,12 @@
 pandoc: 2.14.1
-pkgdown: 1.6.1
+pkgdown: 1.6.1.9001
 pkgdown_sha: ~
 articles:
+  bibliography: bibliography.html
   fl_crashes_city: fl_crashes_city.html
   fl_crashes_county: fl_crashes_county.html
   fl_crashes_state: fl_crashes_state.html
-last_built: 2021-08-17T02:55Z
+  output: test/output.html
+  rendering: test/rendering.html
+last_built: 2021-08-20T15:06Z
 

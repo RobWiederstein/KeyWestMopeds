@@ -15,16 +15,20 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.height=4,
   fig.width = 6,
-  fig.align = "center"
+  fig.align = "center",
+  eval = T
 )
 ```
 
 ```{r load-libraries, include=F}
 library(KeyWestMopeds)
 library(kableExtra)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
+# Suppress summarise info
+options(dplyr.summarise.inform = FALSE)
 library(magrittr)
 library(DT)
+library(ggplot2)
 ```
 
 ```{r load-data, include=F}
@@ -41,113 +45,145 @@ mv_crashes_city <-
         dplyr::filter(in_town_flag == "Yes") %>%
         select(-city_code) %>%
         rename(year = calendar_year, city_code = dhscntycty) %>%
-        mutate(year = year %>% as.character) %>% 
         mutate(year = year %>% as.integer)
+```
+
+## Florida City Crashes by Year and Injury
+
+```{r crashes-city-by-year}
+
+  mv_crashes_city %>% 
+  group_by(year) %>% 
+  summarise(total_crashes  = n(),
+            total_persons = sum(total_persons),
+            total_injured = sum(number_of_injured),
+            total_serious = sum(number_of_serious_injuries),
+            total_killed = sum(number_of_killed)
+            ) %>%
+  kbl() %>%
+  kable_material(c("striped", "hover", "condensed"))
 ```
 
 
 ## Top 100 Florida Cities for Total Crashes in 2019
 
 ```{r total-crashes-city}
-
-df.2 <-
   mv_crashes_city %>% 
   dplyr::filter(year == 2019) %>% 
-  group_by(city_code) %>% 
+  group_by(year, city_code) %>% 
   summarize(tot_crashes = n()) %>% 
   arrange(desc(tot_crashes)) %>% 
-  mutate(year = 2019) %>% 
   dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
   dplyr::select(year, city_code, city, tot_crashes) %>% 
-  slice_head(n = 100) 
-datatable((df.2))
+  slice_head(n = 100) %>% 
+  datatable()
 
 ```
+
+
+```{r clean-names-for-merge, include = F}
+
+#eliminate "." in census dataset
+fl_city_pop$city <- gsub("\\.", "", fl_city_pop$city)
+fl_city_codes$city <- gsub("^FT", "FORT", fl_city_codes$city)
+
+```
+
 
 ## Top 100 Florida Cities for Crashes Per 100,000 Residents
 
-```{r total-crashes-per-capita-city}
-fl_city_pop <- fl_city_pop %>% mutate(year = year %>% as.integer)
+From Florida Traffic Crashes Report Manual, there were 634 city codes in `fl_city_codes`. Some cities have multiple codes in `fl_city_codes`.  For example, Jacksonville is coded as both "0225" and "0238" and Miami as "0166" and "0191". The U.S. Census bureau listed 412 unique cities in `fl_city_pop`. Additionally, the U.S. Census bureau also used "." to abbreviate "Saint" to "St." so the period was eliminated from the city field. When the two dataframes were merged, there were 383 successful matches.
 
-df.1 <-
-  mv_crashes_city %>% 
+
+```{r merge-pop-city, include = F}
+
+fl_city_codes_pop <- 
+  dplyr::left_join(fl_city_codes, fl_city_pop, by = "city") %>% 
   dplyr::filter(year == 2019) %>% 
-  group_by(city_code) %>% 
+  mutate(year = year %>% as.integer)
+
+```
+
+
+```{r total-crashes-city-per-100k}
+
+mv_crashes_city %>% 
+dplyr::filter(year == 2019) %>% 
+dplyr::left_join(., fl_city_codes_pop) %>% 
+group_by(year, city, pop) %>% 
+summarize(tot_crashes = n()) %>% 
+arrange(desc(tot_crashes)) %>% 
+dplyr::select(year, city, tot_crashes, pop) %>% 
+  mutate(crashes_per_100k = `/`(tot_crashes, pop) * 1e5,
+         crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
+dplyr::select(year, city, tot_crashes, pop, crashes_per_100k) %>% 
+arrange(desc(crashes_per_100k)) %>% 
+dplyr::filter(pop > 10000) %>% 
+ungroup() %>% 
+slice_head(n = 100) %>% 
+datatable()
+
+```
+
+## Florida City Crashes by Day
+
+Data was available for the calendar years 2012 through 2019.  The crashes were summed by date and faceted by year.  Years 2012 through 2014 were omitted to expand the vertical plotting area and make the variation more obvious. The number of crashes decreased beginning in 2019. 
+
+```{r plot-crash-by-day, fig.height=8, fig.width=6, dpi=300, out.width="100%"}
+
+mv_crashes_city %>% 
+mutate(date = stringr::str_sub(crash_date, start = 1, end = 10),
+       date = as.Date(date, format = "%Y/%m/%d"),
+       year = stringr::str_sub(crash_date, start = 1, end = 4),
+       year = as.integer(year)) %>% 
+dplyr::filter(year %in% c(2015:2019)) %>% 
+group_by(date, year) %>% 
+count() %>% 
+ggplot() +
+aes(date, n) + 
+geom_line(alpha = .5) + 
+facet_wrap(.~year, scales = "free_x", ncol = 1, strip.position = "right") +
+geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
+theme_minimal() +
+  scale_x_date(name = "") +
+  scale_y_continuous(name = "") +
+  labs(title = "Florida Motorvehicle Crashes in Cities\n 2015 - 2020")
+
+```
+
+
+## Top 100 Florida Cities by Motorcycle Crashes
+
+```{r total-motorcycle-crashes-cities}
+
+mv_crashes_city %>% 
+  dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
+  dplyr::left_join(., fl_city_codes_pop) %>% 
+  group_by(year, city_code, city) %>% 
   summarize(tot_crashes = n()) %>% 
   arrange(desc(tot_crashes)) %>% 
-  mutate(year = 2019) %>% 
-  dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
-  dplyr::left_join(., fl_city_pop, by = c("city", "year")) %>% 
-  dplyr::select(year, city_code, city, tot_crashes, pop) %>% 
-    mutate(crashes_per_capita = `/`(tot_crashes, pop) * 1e5,
-           crashes_per_capita = crashes_per_capita %>% round(1)) %>% 
-  dplyr::select(year, city_code, city, tot_crashes, pop, crashes_per_capita) %>% 
-  arrange(desc(crashes_per_capita)) %>% 
-  dplyr::filter(pop > 10000) %>% 
-  slice_head(n = 100) 
-datatable(df.1)
-```
-
-
-## Crashes by Year in Cities
-
-```{r crashes-by-year, eval=F}
-df.2 <-
-  crash_data %>% 
-  group_by(year) %>% 
-  summarise(total_crashes  = n(),
-            total_persons = sum(total_persons),
-            total_injured = sum(number_of_injured),
-            total_killed = sum(number_of_killed)
-            )
-df.2 %>% 
-  kbl() %>%
-  kable_material(c("striped", "hover", "condensed"))
-```
-
-
-
-
-## Top 10 Cities by Crash Rate in 2018
-
-```{r top-10-cities-by-incident-rate, eval=F}
-df.2 <-
-  crash_data %>% 
-  dplyr::filter(year == "2018") %>% 
-  group_by(city_code, city, pop) %>% 
-  tally() %>% 
-  dplyr::filter(n > 20) %>% 
-  mutate(rate_per_100k = divide_by(n, pop) * 1e5) %>% 
-  mutate(rate_per_100k = rate_per_100k %>% round(1)) %>% 
-  arrange(desc(rate_per_100k))
-
-df.2[1:10, ]  %>% 
-  kbl() %>% 
-  kable_material(c("striped", "hover", "condensed"))
-```
-
-## Crashes within Cities by Day
-
-Data was available for the calendar years 2012 through 2019.  The crashes were summed by date and faceted by year.  Years 2012 through 2014 were omitted to expand the vertical plotting area and make the variation more prevalent. The number of crashes decreased beginning in 2019. 
-
-```{r plot-crash-by-day, eval=F, fig.height=8, fig.width=6, dpi=300, out.width="100%"}
-df.4 <- 
-  crash_data %>% 
-  mutate(date = stringr::str_sub(crash_date, start = 1, end = 10),
-         date = as.Date(date, format = "%Y/%m/%d"),
-         year = stringr::str_sub(crash_date, start = 1, end = 4),
-         year = as.integer(year)) %>% 
-  dplyr::filter(year %in% c(2015:2019)) %>% 
-  group_by(date, year) %>% 
- count()
-
-ggplot(df.4, aes(date, n)) + 
-  geom_line(alpha = .5) + 
-  facet_wrap(.~year, scales = "free_x", ncol = 1, strip.position = "right") +
-  geom_smooth(span = .1, method = 'loess', formula = 'y ~ x') +
-  #scale_x_datetime(date_labels = "%d-%m")
-  theme_bw()
+  ungroup() %>% 
+  slice_head(n = 100) %>% 
+  datatable()
 
 ```
 
+## Top 100 Florida Cities for Motorcycle Crashes Per 100,000 Residents
+
+```{r total-motorcycle-crashes-cities-per-100k}
+
+mv_crashes_city %>% 
+  dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
+  dplyr::left_join(., fl_city_codes_pop) %>%
+  group_by(year, city_code, city, pop) %>% 
+  summarize(tot_crashes = n()) %>% 
+  dplyr::filter(pop > 20000) %>% 
+  mutate(crashes_per_100k = (tot_crashes / pop) * 1e5) %>% 
+  mutate(crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
+  arrange(desc(crashes_per_100k)) %>% 
+  ungroup() %>% 
+  slice_head(n = 100) %>% 
+  datatable()
+
+```
 

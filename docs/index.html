@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,13 +45,8 @@
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
+      <ul class="nav navbar-nav"></ul>
+<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -72,12 +69,10 @@
   </ul>
 </li>
 <li>
-  <a href="hello.html">hello</a>
+  <a href="articles/test/output.html">Output</a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/pkgdown/">
+  <a href="https://github.com/RobWiederstein/KeyWestMopeds">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -96,13 +91,13 @@
   <div class="contents col-md-9">
 <div id="key-west-mopeds-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#key-west-mopeds-" class="anchor"></a>Key West Mopeds <img src="reference/figures/logo.png" align="right" width="120">
+<a href="#key-west-mopeds-" class="anchor" aria-hidden="true"></a>Key West Mopeds <img src="reference/figures/logo.png" align="right" width="120">
 </h1></div>
 <!-- badges: start -->
 
 <div id="overview" class="section level3">
 <h3 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h3>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h3>
 <p><code>KeyWestMopeds</code> is an exploratory analysis of motorcycle/moped crashes in Florida from 2012 through 2019. A threshold requirement for understanding the data set is to understand what triggers a long form crash report and how a motor vehicle is defined.</p>
 <p>According to the Florida Uniform Traffic Crash Manual, a long form crash report is required when:</p>
 <ul>
@@ -115,65 +110,55 @@
 </div>
 <div id="getting-started" class="section level3">
 <h3 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting started</h3>
+<a href="#getting-started" class="anchor" aria-hidden="true"></a>Getting started</h3>
 <p>The package consists of the dataset <code>crash_data</code>. Assistance may be requested via the command <code>?crash_data</code>.</p>
 </div>
 <div id="resources" class="section level3">
 <h3 class="hasAnchor">
-<a href="#resources" class="anchor"></a>Resources</h3>
+<a href="#resources" class="anchor" aria-hidden="true"></a>Resources</h3>
 <ul>
 <li>
-<a href="https://github.com/RobWiederstein/KeyWestMopeds/issues">Open an issue</a> (GitHub issues for bug reports, feature requests)</li>
+<a href="https://github.com/RobWiederstein/KeyWestMopeds/issues" class="external-link">Open an issue</a> (GitHub issues for bug reports, feature requests)</li>
 </ul>
 </div>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h3>
 <ul>
-<li>Install latest development version from GitHub (requires <a href="https://github.com/hadley/devtools">devtools</a> package):</li>
+<li>Install latest development version from GitHub (requires <a href="https://github.com/hadley/devtools" class="external-link">devtools</a> package):</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RobWiederstein/KeyWestMopeds"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-</div>
-<div id="built-with" class="section level3">
-<h3 class="hasAnchor">
-<a href="#built-with" class="anchor"></a>Built With</h3>
-<ul>
-<li><a href="">Rstudio</a></li>
-<li><a href="">R</a></li>
-<li><a href="">usethis</a></li>
-<li><a href="">pkgdown</a></li>
-</ul>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RobWiederstein/KeyWestMopeds"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <!-- CONTACT -->
 </div>
 <div id="contact" class="section level3">
 <h3 class="hasAnchor">
-<a href="#contact" class="anchor"></a>Contact</h3>
-<p>Rob Wiederstein - <a href="https://twitter.com/RobWiederstein">@RobWiederstein</a> - <a href="mailto:rob@robwiederstein.org" class="email">rob@robwiederstein.org</a></p>
-<p>Project Link: <a href="https://github.com/RobWiederstein/KeyWestMopeds">https://github.com/RobWiederstein/KeyWestMopeds</a></p>
+<a href="#contact" class="anchor" aria-hidden="true"></a>Contact</h3>
+<p>Rob Wiederstein - <a href="https://twitter.com/RobWiederstein" class="external-link">@RobWiederstein</a> - <a href="mailto:rob@robwiederstein.org" class="email">rob@robwiederstein.org</a></p>
+<p>Project Link: <a href="https://github.com/RobWiederstein/KeyWestMopeds" class="external-link">https://github.com/RobWiederstein/KeyWestMopeds</a></p>
 <!-- ACKNOWLEDGEMENTS -->
 </div>
 <div id="acknowledgements" class="section level3">
 <h3 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h3>
+<a href="#acknowledgements" class="anchor" aria-hidden="true"></a>Acknowledgements</h3>
 <ul>
-<li><a href="https://www.webpagefx.com/tools/emoji-cheat-sheet">Florida Department of Transportation</a></li>
+<li><a href="https://www.webpagefx.com/tools/emoji-cheat-sheet" class="external-link">Florida Department of Transportation</a></li>
 </ul>
 </div>
 <div id="code-of-conduct" class="section level3">
 <h3 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h3>
-<p>Please note that the KeyWestMopeds project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<a href="#code-of-conduct" class="anchor" aria-hidden="true"></a>Code of Conduct</h3>
+<p>Please note that the KeyWestMopeds project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/RobWiederstein/KeyWestMopeds">https://​github.com/​RobWiederstein/​KeyWestMopeds</a>
 </li>
@@ -181,42 +166,48 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Rob Wiederstein <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/YOUR-ORCID-ID" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Rob Wiederstein.</p>
+  <p></p>
+<p>Developed by Rob Wiederstein.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -224,6 +215,8 @@
 
   
 
+
+  
 
   </body>
 </html>

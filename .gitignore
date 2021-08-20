@@ -1,6 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+.DS_Store
 *.orig
 .env
 *.tex
+/doc/
+/Meta/
