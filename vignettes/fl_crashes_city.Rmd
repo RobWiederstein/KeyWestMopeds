@@ -68,6 +68,7 @@ mv_crashes_city <-
 ## Top 100 Florida Cities for Total Crashes in 2019
 
 ```{r total-crashes-city}
+ mv_crashes_city_1 <-
   mv_crashes_city %>% 
   dplyr::filter(year == 2019) %>% 
   group_by(year, city_code) %>% 
@@ -75,8 +76,8 @@ mv_crashes_city <-
   arrange(desc(tot_crashes)) %>% 
   dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
   dplyr::select(year, city_code, city, tot_crashes) %>% 
-  slice_head(n = 100) %>% 
-  datatable()
+  slice_head(n = 100)
+datatable(mv_crashes_city_1)
 
 ```
 
@@ -155,24 +156,26 @@ theme_minimal() +
 ## Top 100 Florida Cities by Motorcycle Crashes
 
 ```{r total-motorcycle-crashes-cities}
-
-mv_crashes_city %>% 
+mc_crashes_city <-
+  mv_crashes_city %>% 
   dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
   dplyr::left_join(., fl_city_codes_pop) %>% 
   group_by(year, city_code, city) %>% 
   summarize(tot_crashes = n()) %>% 
   arrange(desc(tot_crashes)) %>% 
   ungroup() %>% 
-  slice_head(n = 100) %>% 
-  datatable()
-
+  slice_head(n = 100)
+  datatable(mc_crashes_city)
+#write file to public datasets
+#file <- "~/Dropbox/public/datasets/2021-08-20-fl_city_motorcycle_crashes_total.csv"
+#write.csv(mv_crashes_city_1, file = file, row.names = F)
 ```
 
 ## Top 100 Florida Cities for Motorcycle Crashes Per 100,000 Residents
 
 ```{r total-motorcycle-crashes-cities-per-100k}
-
-mv_crashes_city %>% 
+mc_crashes_city_pc <-
+  mv_crashes_city %>% 
   dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
   dplyr::left_join(., fl_city_codes_pop) %>%
   group_by(year, city_code, city, pop) %>% 
@@ -182,8 +185,9 @@ mv_crashes_city %>%
   mutate(crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
   arrange(desc(crashes_per_100k)) %>% 
   ungroup() %>% 
-  slice_head(n = 100) %>% 
-  datatable()
-
+  slice_head(n = 100) 
+datatable(mc_crashes_city_pc)
+#file <- "~/Dropbox/public/datasets/2021-08-20-fl_city_motorcycle_crashes_per_100k.csv"
+#write.csv(mc_crashes_city_pc, file = file, row.names = F)
 ```
 
