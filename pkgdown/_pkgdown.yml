@@ -1,16 +1,16 @@
+url: https://robwiederstein.github.io/KeyWestMopeds/index.html
+
 template:
   params:
     bootswatch: cerulean
+
+development:
+  mode: auto
+
 navbar:
   structure:
-    left:
-    - home
-    right:
-    - reference
-    - articles
-    - bibliography
-    - output
-    - github
+    left: [home]
+    right: [reference, articles, bibliography, github]
   components:
     home: ~
     reference:
@@ -21,22 +21,19 @@ navbar:
       menu:
       - text: Florida Statewide Crashes 2012 - 2021
         href: articles/fl_crashes_state.html
+      - text: ------
       - text: Florida Crashes by County 2012 - 2021
         href: articles/fl_crashes_county.html
+      - text: ------
       - text: Florida Crashes by City 2012 - 2021
         href: articles/fl_crashes_city.html
-    bibliogrpahy:
+    bibliography:
       text: Bibliography
       href: articles/bibliography.html
-    output:
-      text: Output
-      href: articles/test/output.html
-    rendering:
-      text: Rendering
-      href: articles/test/rendering.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/RobWiederstein/KeyWestMopeds
+
 reference:
 - title: Datasets
 - subtitle: Population
@@ -54,6 +51,7 @@ reference:
   desc: Data from Florida's long-form reported crashes
 - contents:
   - mv_crashes_all
+
 articles:
 - title: Motor Vehicle Crash Data
   navbar: ~
