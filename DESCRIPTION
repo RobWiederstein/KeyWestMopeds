@@ -25,8 +25,11 @@ Imports:
 Suggests: 
     rmarkdown,
     knitr,
-    spelling
+    spelling,
+    testthat (>= 3.0.0),
+    covr
 VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/RobWiederstein/KeyWestMopeds
 BugReports: https://github.com/RobWiederstein/KeyWestMopeds/issues
+Config/testthat/edition: 3

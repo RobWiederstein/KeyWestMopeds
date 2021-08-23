@@ -2,6 +2,9 @@
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Github: codesize](https://img.shields.io/github/languages/code-size/RobWiederstein/KeyWestMopeds)]
+[![R version](https://img.shields.io/github/r-package/v/RobWiederstein/KeyWestMopeds)]
+[![Codecov test coverage](https://codecov.io/gh/RobWiederstein/KeyWestMopeds/branch/main/graph/badge.svg)](https://codecov.io/gh/RobWiederstein/KeyWestMopeds?branch=main)
 <!-- badges: end -->
 
 
@@ -19,7 +22,7 @@ parties or passengers involved in the crash;
 - Involved a commercial motor vehicle.
 
 
-### Getting started 
+### Getting started
 
 The package consists of the dataset `crash_data`.  Assistance may be requested via the command `?crash_data`.
 
@@ -31,7 +34,7 @@ The package consists of the dataset `crash_data`.  Assistance may be requested v
 
 * Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-```r 
+```r
 if (!require("devtools")) {
   install.packages("devtools")
 }
@@ -50,6 +53,5 @@ Project Link: [https://github.com/RobWiederstein/KeyWestMopeds](https://github.c
 * [Florida Department of Transportation](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 
 ### Code of Conduct
-  
-  Please note that the KeyWestMopeds project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
+  Please note that the KeyWestMopeds project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
