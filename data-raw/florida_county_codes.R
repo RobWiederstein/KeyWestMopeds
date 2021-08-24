@@ -17,4 +17,4 @@ fl_county_codes <-
         mutate(county = gsub(" County", "", county) %>% toupper)
 
 # 4.0 save dataframe as KeyWestMopeds/data/fl_county_codes.rda ----
-usethis::use_data(fl_county_codes, overwrite = TRUE)
+usethis::use_data(fl_county_codes, overwrite = TRUE, compress = "bzip2")

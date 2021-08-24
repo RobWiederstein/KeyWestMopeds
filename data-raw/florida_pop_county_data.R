@@ -19,4 +19,4 @@ fl_county_pop <-
                year = year %>% as.integer) %>%
         separate(county, into = c("county", NA), sep = ", ")
 # 4.0 save dataframe as KeyWestMopeds/data/fl_county_pop.rda ----
-usethis::use_data(fl_county_pop, overwrite = TRUE)
+usethis::use_data(fl_county_pop, overwrite = TRUE, compress = "bzip2")

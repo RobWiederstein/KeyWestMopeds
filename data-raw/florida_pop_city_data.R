@@ -21,4 +21,4 @@ fl_city_pop <-
         select(-state)
 
 # 4.0 save dataframe as KeyWestMopeds/data/crash_data.rda ----
-usethis::use_data(fl_city_pop, overwrite = TRUE)
+usethis::use_data(fl_city_pop, overwrite = TRUE, compress = "bzip2")

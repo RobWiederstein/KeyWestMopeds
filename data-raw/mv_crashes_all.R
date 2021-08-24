@@ -56,4 +56,4 @@ mv_crashes_all <-
 # Couldn't find code for helmet use either though they're both on report
 
 # 5.0 save dataframe as KeyWestMopeds/data/fl_crashes_all.rdb
-usethis::use_data(mv_crashes_all, overwrite = TRUE)
+usethis::use_data(mv_crashes_all, overwrite = TRUE, compress = "bzip2")

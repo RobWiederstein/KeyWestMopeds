@@ -5,6 +5,7 @@
 [![Github: codesize](https://img.shields.io/github/languages/code-size/RobWiederstein/KeyWestMopeds)]
 [![R version](https://img.shields.io/github/r-package/v/RobWiederstein/KeyWestMopeds)]
 [![Codecov test coverage](https://codecov.io/gh/RobWiederstein/KeyWestMopeds/branch/main/graph/badge.svg)](https://codecov.io/gh/RobWiederstein/KeyWestMopeds?branch=main)
+[![Travis build status](https://travis-ci.com/RobWiederstein/KeyWestMopeds.svg?branch=main)](https://travis-ci.com/RobWiederstein/KeyWestMopeds)
 <!-- badges: end -->
 
 

@@ -12,6 +12,7 @@ A data frame with 2,733,425 rows and 21 variables:
 \item{calendar_year}{calendar year as string}
 \item{crash_date}{date of crash as date}
 \item{crash_time}{four character string for time on 12 hour interval}
+\item{date}{date formatted as "YYYY-mm-dd"}
 \item{dayoweek}{three letter abbreviation for day of week (Mon through Sun)}
 \item{dot_cnty_cd}{Florida Department of Transportation county code}
 \item{county_txt}{county name}

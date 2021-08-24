@@ -20,16 +20,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r load-libraries, include=F}
-library(KeyWestMopeds)
-library(kableExtra)
-library(dplyr, warn.conflicts = FALSE)
-# Suppress summarise info
-options(dplyr.summarise.inform = FALSE)
+```{r load-libraries, include=F, eval = T}
 library(magrittr)
-library(DT)
+library(KeyWestMopeds)
+library(dplyr)
 library(ggplot2)
+library(tidyr)
 ```
+
 
 ```{r load-data, include=F}
 data("mv_crashes_all")
@@ -40,12 +38,12 @@ data("fl_city_pop")
 ```{r city-crashes-all, include = F}
 mv_crashes_city <-
   mv_crashes_all %>% 
-  mutate(city_code = stringr::str_sub(dhscntycty, start = -2)) %>%
+  dplyr::mutate(city_code = stringr::str_sub(dhscntycty, start = -2)) %>%
         dplyr::filter(!grepl("00", city_code)) %>%
         dplyr::filter(in_town_flag == "Yes") %>%
-        select(-city_code) %>%
-        rename(year = calendar_year, city_code = dhscntycty) %>%
-        mutate(year = year %>% as.integer)
+        dplyr::select(-city_code) %>%
+        dplyr::rename(year = calendar_year, city_code = dhscntycty) %>%
+        dplyr::mutate(year = year %>% as.integer)
 ```
 
 ## Florida City Crashes by Year and Injury
@@ -53,15 +51,15 @@ mv_crashes_city <-
 ```{r crashes-city-by-year}
 
   mv_crashes_city %>% 
-  group_by(year) %>% 
-  summarise(total_crashes  = n(),
+  dplyr::group_by(year) %>% 
+  dplyr::summarise(total_crashes  = n(),
             total_persons = sum(total_persons),
             total_injured = sum(number_of_injured),
             total_serious = sum(number_of_serious_injuries),
             total_killed = sum(number_of_killed)
             ) %>%
-  kbl() %>%
-  kable_material(c("striped", "hover", "condensed"))
+  kableExtra::kbl() %>%
+  kableExtra::kable_material(c("striped", "hover", "condensed"))
 ```
 
 
@@ -71,13 +69,13 @@ mv_crashes_city <-
  mv_crashes_city_1 <-
   mv_crashes_city %>% 
   dplyr::filter(year == 2019) %>% 
-  group_by(year, city_code) %>% 
-  summarize(tot_crashes = n()) %>% 
-  arrange(desc(tot_crashes)) %>% 
+  dplyr::group_by(year, city_code) %>% 
+  dplyr::summarize(tot_crashes = n()) %>% 
+  dplyr::arrange(desc(tot_crashes)) %>% 
   dplyr::left_join(., fl_city_codes, by = "city_code") %>% 
   dplyr::select(year, city_code, city, tot_crashes) %>% 
-  slice_head(n = 100)
-datatable(mv_crashes_city_1)
+  dplyr::slice_head(n = 100)
+DT::datatable(mv_crashes_city_1)
 
 ```
 
@@ -101,7 +99,7 @@ From Florida Traffic Crashes Report Manual, there were 634 city codes in `fl_cit
 fl_city_codes_pop <- 
   dplyr::left_join(fl_city_codes, fl_city_pop, by = "city") %>% 
   dplyr::filter(year == 2019) %>% 
-  mutate(year = year %>% as.integer)
+  dplyr::mutate(year = year %>% as.integer)
 
 ```
 
@@ -111,18 +109,18 @@ fl_city_codes_pop <-
 mv_crashes_city %>% 
 dplyr::filter(year == 2019) %>% 
 dplyr::left_join(., fl_city_codes_pop) %>% 
-group_by(year, city, pop) %>% 
-summarize(tot_crashes = n()) %>% 
-arrange(desc(tot_crashes)) %>% 
+dplyr::group_by(year, city, pop) %>% 
+dplyr::summarize(tot_crashes = n()) %>% 
+dplyr::arrange(desc(tot_crashes)) %>% 
 dplyr::select(year, city, tot_crashes, pop) %>% 
-  mutate(crashes_per_100k = `/`(tot_crashes, pop) * 1e5,
+dplyr::mutate(crashes_per_100k = `/`(tot_crashes, pop) * 1e5,
          crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
 dplyr::select(year, city, tot_crashes, pop, crashes_per_100k) %>% 
-arrange(desc(crashes_per_100k)) %>% 
+dplyr::arrange(desc(crashes_per_100k)) %>% 
 dplyr::filter(pop > 10000) %>% 
-ungroup() %>% 
-slice_head(n = 100) %>% 
-datatable()
+dplyr::ungroup() %>% 
+dplyr::slice_head(n = 100) %>% 
+DT::datatable()
 
 ```
 
@@ -133,14 +131,14 @@ Data was available for the calendar years 2012 through 2019.  The crashes were s
 ```{r plot-crash-by-day, fig.height=8, fig.width=6, dpi=300, out.width="100%"}
 
 mv_crashes_city %>% 
-mutate(date = stringr::str_sub(crash_date, start = 1, end = 10),
+dplyr::mutate(date = stringr::str_sub(crash_date, start = 1, end = 10),
        date = as.Date(date, format = "%Y/%m/%d"),
        year = stringr::str_sub(crash_date, start = 1, end = 4),
        year = as.integer(year)) %>% 
 dplyr::filter(year %in% c(2015:2019)) %>% 
-group_by(date, year) %>% 
-count() %>% 
-ggplot() +
+dplyr::group_by(date, year) %>% 
+dplyr::count() %>% 
+ggplot2::ggplot() +
 aes(date, n) + 
 geom_line(alpha = .5) + 
 facet_wrap(.~year, scales = "free_x", ncol = 1, strip.position = "right") +
@@ -160,12 +158,12 @@ mc_crashes_city <-
   mv_crashes_city %>% 
   dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
   dplyr::left_join(., fl_city_codes_pop) %>% 
-  group_by(year, city_code, city) %>% 
-  summarize(tot_crashes = n()) %>% 
-  arrange(desc(tot_crashes)) %>% 
-  ungroup() %>% 
-  slice_head(n = 100)
-  datatable(mc_crashes_city)
+  dplyr::group_by(year, city_code, city) %>% 
+  dplyr::summarize(tot_crashes = n()) %>% 
+  dplyr::arrange(desc(tot_crashes)) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::slice_head(n = 100)
+DT::datatable(mc_crashes_city)
 #write file to public datasets
 #file <- "~/Dropbox/public/datasets/2021-08-20-fl_city_motorcycle_crashes_total.csv"
 #write.csv(mv_crashes_city_1, file = file, row.names = F)
@@ -178,15 +176,15 @@ mc_crashes_city_pc <-
   mv_crashes_city %>% 
   dplyr::filter(motorcycle_involved == "Yes" & year == 2019) %>% 
   dplyr::left_join(., fl_city_codes_pop) %>%
-  group_by(year, city_code, city, pop) %>% 
-  summarize(tot_crashes = n()) %>% 
+  dplyr::group_by(year, city_code, city, pop) %>% 
+  dplyr::summarize(tot_crashes = n()) %>% 
   dplyr::filter(pop > 20000) %>% 
-  mutate(crashes_per_100k = (tot_crashes / pop) * 1e5) %>% 
-  mutate(crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
-  arrange(desc(crashes_per_100k)) %>% 
-  ungroup() %>% 
-  slice_head(n = 100) 
-datatable(mc_crashes_city_pc)
+  dplyr::mutate(crashes_per_100k = (tot_crashes / pop) * 1e5) %>% 
+  dplyr::mutate(crashes_per_100k = crashes_per_100k %>% round(1)) %>% 
+  dplyr::arrange(desc(crashes_per_100k)) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::slice_head(n = 100) 
+DT::datatable(mc_crashes_city_pc)
 #file <- "~/Dropbox/public/datasets/2021-08-20-fl_city_motorcycle_crashes_per_100k.csv"
 #write.csv(mc_crashes_city_pc, file = file, row.names = F)
 ```

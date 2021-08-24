@@ -22,5 +22,5 @@ fl_state_pop <-
         mutate(calendar_year = calendar_year %>% as.integer)
 
 # 4.0 save dataframe as KeyWestMopeds/data/fl_pop_data.rda ----
-usethis::use_data(fl_state_pop, overwrite = TRUE)
+usethis::use_data(fl_state_pop, overwrite = TRUE, compress = "bzip2")
 

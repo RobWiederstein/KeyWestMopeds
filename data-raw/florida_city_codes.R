@@ -25,4 +25,4 @@ fl_city_codes <-
         mutate(city = city %>% toupper)
 
 # 4.0 save dataframe as KeyWestMopeds/data/florida_city_codes_data.rda ----
-usethis::use_data(fl_city_codes, overwrite = TRUE)
+usethis::use_data(fl_city_codes, overwrite = TRUE, compress = "bzip2")

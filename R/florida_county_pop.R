@@ -4,7 +4,7 @@
 #'
 #' @format A data frame with 10 rows and 3 variables:
 #' \describe{
-#'   \item{city}{names of florida counties}
+#'   \item{county}{names of florida counties}
 #'   \item{year}{year as integer}
 #'   \item{pop}{number of persons}
 #'
