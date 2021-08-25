@@ -98,7 +98,7 @@ From Florida Traffic Crashes Report Manual, there were 634 city codes in `fl_cit
 
 fl_city_codes_pop <- 
   dplyr::left_join(fl_city_codes, fl_city_pop, by = "city") %>% 
-  dplyr::filter(year == 2019) %>% 
+  #dplyr::filter(year == 2019) %>% 
   dplyr::mutate(year = year %>% as.integer)
 
 ```
@@ -187,5 +187,41 @@ mc_crashes_city_pc <-
 DT::datatable(mc_crashes_city_pc)
 #file <- "~/Dropbox/public/datasets/2021-08-20-fl_city_motorcycle_crashes_per_100k.csv"
 #write.csv(mc_crashes_city_pc, file = file, row.names = F)
+```
+
+
+```{r motorcycle-crashes-beach}
+
+ mc_crashes_beach <-
+  mv_crashes_city %>% 
+  dplyr::filter(motorcycle_involved == "Yes") %>%
+  dplyr::left_join(., fl_city_codes_pop) %>%
+  dplyr::group_by(year, city_code, city, pop) %>% 
+  dplyr::summarize(tot_crashes = n()) %>% 
+  tidyr::drop_na() %>% 
+  dplyr::ungroup() %>% 
+  mutate(beach = "No")
+mc_crashes_beach$beach[grep("BEACH", mc_crashes_beach$city)] <- "Yes"
+mc_crashes_beach_1 <-
+  mc_crashes_beach %>% 
+  mutate(beach = factor(beach)) %>% 
+  group_by(year, beach) %>% 
+  summarize(tot_crashes = sum(tot_crashes),
+            tot_pop = sum(pop)) %>% 
+  mutate(mc_crashes_per_100k = tot_crashes / tot_pop,
+         mc_crashes_per_100k = (mc_crashes_per_100k * 1e5) %>% round(1))
+ p1 <-
+   mc_crashes_beach_1 %>% 
+   ggplot() +
+   aes(year, mc_crashes_per_100k, group = beach, color = beach) +
+   geom_line() +
+   geom_point() + 
+   scale_y_continuous(name = "per 100,000 residents") +
+   scale_x_continuous(name = "") +
+   labs(title = "Florida Motorcycle Accident Rates by Location") +
+   theme_light()
+ p1
+ filename <- "../../blogdown-default/content/post/2021-08-09-motorcycle-and-moped-accidents-in-florida/beach-accident-rate.jpg"
+ ggsave(p1, filename = filename, width = 6, height = 4, units = "in", dpi = 300)
 ```
 

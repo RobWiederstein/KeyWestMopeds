@@ -39,10 +39,14 @@ data(fl_state_pop)
 ## Total Crashes
 
 ```{r total-crashes}
-mv_crashes_all %>%
+df.1 <-
+  mv_crashes_all %>%
         mutate(calendar_year = calendar_year %>% as.integer) %>% 
         group_by(calendar_year, motorcycle_involved) %>%
-        summarize(total_crashes = n()) %>%
+        summarize(total_crashes = n()) 
+
+p1 <-
+  df.1 %>%
         ggplot() +
         aes(calendar_year, total_crashes, group = motorcycle_involved, color = motorcycle_involved) +
         geom_line() +
@@ -51,22 +55,28 @@ mv_crashes_all %>%
         scale_x_continuous(name = "") +
         scale_color_discrete(name = "Motorcycle") +
         labs(title = ("Total Number of Crashes")) +
-        theme_minimal()
+        theme_light()
+p1
+# filename <- "../../blogdown-default/content/post/2021-08-09-motorcycle-and-moped-accidents-in-florida/total-number-of-crashes.jpg"
+# ggsave(filename = filename, p1, width = 6, height = 4, units = "in", dpi = 300, bg = NULL)
 
 ```
 
 ## Total Crashes Per Capita
 
 ```{r total-crashes-per-capita}
-
-mv_crashes_all %>%
+df.2 <-
+  mv_crashes_all %>%
         mutate(calendar_year = calendar_year %>% as.integer) %>% 
         group_by(calendar_year, motorcycle_involved) %>%
         summarize(total_crashes = n()) %>%
         dplyr::left_join(., fl_state_pop, by = 'calendar_year') %>%
         dplyr::filter(calendar_year %in% c(2012:2019)) %>%
         mutate(per_100k = divide_by(total_crashes, pop) * 1e5) %>%
-        mutate(per_100k = per_100k %>% round(1)) %>%
+        mutate(per_100k = per_100k %>% round(1)) 
+
+p2 <-
+  df.2 %>%
         ggplot() +
         aes(calendar_year, per_100k, group = motorcycle_involved, color = motorcycle_involved) +
         geom_line() +
@@ -75,18 +85,22 @@ mv_crashes_all %>%
         scale_x_continuous(name = "") +
         scale_color_discrete(name = "Motorcycle") +
         labs(title = ("Total Number of Crashes Per 100,000 Residents")) +
-        theme_minimal()
-
+        theme_light()
+# filename <- "../../blogdown-default/content/post/2021-08-09-motorcycle-and-moped-accidents-in-florida/crashes-per-100k-residents.jpg"
+#  ggsave(filename = filename, p2, width = 6, height = 4, units = "in", dpi = 300)
 ```
 
 ## Total Persons Killed
 
 ```{r total-killed}
 
-mv_crashes_all %>%
+df.3 <-
+  mv_crashes_all %>%
         mutate(calendar_year = calendar_year %>% as.integer) %>% 
         group_by(calendar_year, motorcycle_involved) %>%
-        summarize(total_killed = sum(number_of_killed)) %>%
+        summarize(total_killed = sum(number_of_killed)) 
+p3 <-
+  df.3 %>%
         ggplot() +
         aes(calendar_year, total_killed, group = motorcycle_involved, color = motorcycle_involved) +
         geom_line() +
@@ -95,7 +109,9 @@ mv_crashes_all %>%
         scale_x_continuous(name = "") +
         scale_color_discrete(name = "Motorcycle") +
         labs(title = "Total Persons Killed") +
-        theme_minimal()
+        theme_light()
+filename <- "../../blogdown-default/content/post/2021-08-09-motorcycle-and-moped-accidents-in-florida/total-fatalities.jpg"
+ ggsave(filename = filename, p3, width = 6, height = 4, units = "in", dpi = 300)
 ```
 
 ## Total Persons Killed Per Capita
